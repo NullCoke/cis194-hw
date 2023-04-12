@@ -5,23 +5,17 @@ import CodeWorld
 main :: IO ()
 main = exercise
 
-tree :: Integer -> Picture
-tree 0 = blank
-tree n =
-  curve [(0, 0), (0, 1)]
-    & translated
-      0
-      1
-      ( rotated (pi / 10) (tree (n - 1)) & rotated (-pi / 10) (tree (n - 1))
-      )
+tree :: Picture -> Integer -> Picture
+tree t 0 = t
+tree t n =
+  translated 0 1 (rotated (pi / 10) (tree t (n - 1)) & rotated (-pi / 10) (tree t (n - 1)))
+    & curve [(0, 0), (0, 1)]
 
-bloom :: Integer -> Picture
-bloom t
-  | t < 10 = tree t
-  | otherwise = tree 10
+bloom :: Double -> Picture
+bloom t = colored pink (solidCircle (min t 10 / 50))
 
 bloomAnimation :: Double -> Picture
-bloomAnimation t = bloom (round t)
+bloomAnimation t = tree (bloom t) 8
 
 exercise :: IO ()
 exercise = animationOf bloomAnimation
