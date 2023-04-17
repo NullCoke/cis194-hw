@@ -3,7 +3,7 @@
 import CodeWorld
 
 main :: IO ()
-main = exercise
+main = animationOf trafficLightAnimation
 
 lightInfo :: Color -> Double -> Picture
 lightInfo c dx = colored c (translated 0 dx (solidCircle 1))
@@ -23,6 +23,3 @@ trafficController t
 
 trafficLightAnimation :: Double -> Picture
 trafficLightAnimation t = trafficController (round t `mod` 6)
-
-exercise :: IO ()
-exercise = animationOf trafficLightAnimation

@@ -3,7 +3,7 @@
 import CodeWorld
 
 main :: IO ()
-main = exercise
+main = animationOf bloomAnimation
 
 tree :: Picture -> Integer -> Picture
 tree t 0 = t
@@ -16,6 +16,3 @@ bloom t = colored pink (solidCircle (min t 10 / 50))
 
 bloomAnimation :: Double -> Picture
 bloomAnimation t = tree (bloom t) 8
-
-exercise :: IO ()
-exercise = animationOf bloomAnimation
