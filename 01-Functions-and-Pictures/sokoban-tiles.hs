@@ -1,10 +1,4 @@
-{-# OPTIONS_GHC -fno-warn-unused-binds #-}
-
 import CodeWorld
-
-main :: IO()
-main = drawingOf pictureOfMaze
-
 
 wall, ground, storage, box :: Picture
 wall =    colored grey (solidRectangle 1 1)
@@ -20,15 +14,14 @@ drawTile 4 = box
 drawTile _ = blank
 
 pictureOfMaze :: Picture
-pictureOfMaze = drawRows (-10)
+pictureOfMaze = draw21times (\r -> draw21times (\c -> drawTileAt r c))
 
-drawRows :: Integer -> Picture
-drawRows 11 = blank
-drawRows r  = drawCols r (-10) & drawRows (r+1)
-
-drawCols :: Integer -> Integer -> Picture
-drawCols _ 11 = blank
-drawCols r c = drawTileAt r c & drawCols r (c+1)
+draw21times :: (Integer -> Picture) -> Picture
+draw21times something = go (-10)
+  where
+    go :: Integer -> Picture
+    go 11 = blank
+    go n  = something n & go (n+1)
 
 drawTileAt :: Integer -> Integer -> Picture
 drawTileAt r c = translated (fromIntegral r) (fromIntegral c) (drawTile (maze r c))
@@ -42,5 +35,5 @@ maze x y
   | x >= -2 && y == 0        = 4
   | otherwise                = 2
 
-exercise3 :: IO ()
-exercise3 = drawingOf pictureOfMaze
+main :: IO ()
+main = drawingOf pictureOfMaze
